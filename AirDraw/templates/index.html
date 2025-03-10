@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom UI</title>
+    <link rel="stylesheet" href="../static/styles.css">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <div class="nav-bar">
+        <label class="theme-toggle">
+            <input type="checkbox" id="theme-switch">
+            <span class="slider"></span>
+        </label>
+        <i data-lucide="maximize" class="icon"></i>
+        <i data-lucide="user" class="icon"></i>
+    </div>
+
+    <!-- Sign-up Button -->
+    <button class="sign-up">
+        <i data-lucide="rocket" class="icon"></i>
+        <span>Sign-up</span>
+    </button>
+
+    <!-- Left Sidebar -->
+    <div class="sidebar">
+        <i data-lucide="globe" class="icon"></i>
+        <span>Spaces</span>
+        <i data-lucide="edit" class="icon"></i>
+        <span>Edit</span>
+        <i data-lucide="upload-cloud" class="icon"></i>
+        <span>Media</span>
+    </div>
+
+    <!-- Lower Sidebar -->
+    <div class="sidebar bottom">
+        <i data-lucide="lightbulb" class="icon"></i>
+        <span>Insights</span>
+        <i data-lucide="mic" class="icon"></i>
+        <span>voice</span>
+        <i data-lucide="timer" class="icon"></i>
+        <span>Timer</span>
+        <i data-lucide="send" class="icon"></i>
+        <span>Share</span>
+    </div>
+    <script src="../static/script.js" defer></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
