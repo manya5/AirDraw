@@ -56,7 +56,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 17px;
+    gap: 17px;  
     backdrop-filter: blur(5px);
 }
 
