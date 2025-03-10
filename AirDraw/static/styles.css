@@ -20,6 +20,13 @@ body {
     backdrop-filter: blur(5px);
 }
 
+.profile-menu {
+    display: flex;
+    align-items: center;
+    gap: 5px;  /* Adjust spacing */
+    cursor: pointer;
+}
+
 .sign-up {
     position: absolute;
     top: 20px;
