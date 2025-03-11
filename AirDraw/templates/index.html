@@ -18,9 +18,21 @@
             <span class="slider"></span>
         </label>
         <i data-lucide="maximize" class="icon"></i>
+
         <div class="profile-menu">
             <i data-lucide="user" class="icon"></i>
-            <i data-lucide="chevron-down" class="icon"></i>
+            <i data-lucide="chevron-down" class="icon" id="chevron-toggle"></i> 
+        
+            <!-- ✅ Fixed: Moved dropdown inside profile-menu -->
+            <div id="profile-dropdown" class="dropdown hidden">
+                <a href="#"><i class="fas fa-user"></i> Signup / Login</a>
+                <a href="#"><i class="fas fa-paint-brush"></i> Setting</a>
+                <div class="social-icons">
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-tiktok"></i>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -56,4 +68,17 @@
         lucide.createIcons();
     </script>
 </body>
+
+<!-- Dropdown Menu -->
+<div id="profile-dropdown" class="dropdown hidden">
+    <a href="#"><i class="fas fa-user"></i> Signup / Login</a>
+    <a href="#"><i class="fas fa-paint-brush"></i> Setting</a>
+    <div class="social-icons">
+        <i class="fab fa-instagram"></i>
+        <i class="fab fa-twitter"></i>
+        <i class="fab fa-tiktok"></i>
+    </div>
+</div>
+</div>
+
 </html>

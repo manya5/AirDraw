@@ -1,8 +1,28 @@
 document.addEventListener("DOMContentLoaded", function () {
     lucide.createIcons();
 
-    const themeSwitch = document.getElementById("theme-switch");
-    const fullscreenToggle = document.querySelector("[data-lucide='maximize']"); // Get the existing fullscreen icon
+    const chevronToggle = document.querySelector("#chevron-toggle");
+    const dropdownMenu = document.querySelector("#profile-dropdown");
+    const themeSwitch = document.querySelector("#theme-switch");
+    const fullscreenToggle = document.querySelector("[data-lucide='maximize']"); // Fullscreen icon
+
+    // Debugging Logs (Check if elements exist)
+    console.log("Chevron Toggle Found:", chevronToggle !== null);
+    console.log("Dropdown Menu Found:", dropdownMenu !== null);
+
+    // Function to toggle profile dropdown
+    function toggleDropdown(event) {
+        event.stopPropagation();
+        console.log("Dropdown Toggle Clicked"); // Debugging
+        dropdownMenu.classList.toggle("hidden");
+    }
+
+    // Function to close dropdown when clicking outside
+    function closeDropdown(event) {
+        if (!chevronToggle.contains(event.target) && !dropdownMenu.contains(event.target)) {
+            dropdownMenu.classList.add("hidden");
+        }
+    }
 
     // Function to toggle themes
     function toggleTheme() {
@@ -20,7 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Function to toggle fullscreen
     function toggleFullscreen() {
         if (!document.fullscreenElement) {
-            // Request fullscreen on body or specific element
             if (document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen();
             } else if (document.documentElement.mozRequestFullScreen) { // Firefox
@@ -31,7 +50,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.documentElement.msRequestFullscreen();
             }
         } else {
-            // Exit fullscreen
             if (document.exitFullscreen) {
                 document.exitFullscreen();
             } else if (document.mozCancelFullScreen) { // Firefox
@@ -53,7 +71,28 @@ document.addEventListener("DOMContentLoaded", function () {
         themeSwitch.checked = false;
     }
 
-    // Add event listener
-    themeSwitch.addEventListener("change", toggleTheme);
-    fullscreenToggle.addEventListener("click", toggleFullscreen); // Event listener for fullscreen toggle
+    // Add event listeners
+    if (chevronToggle) {
+        chevronToggle.addEventListener("click", toggleDropdown);
+    } else {
+        console.error("Chevron toggle button not found!");
+    }
+
+    if (dropdownMenu) {
+        document.addEventListener("click", closeDropdown);
+    } else {
+        console.error("Dropdown menu not found!");
+    }
+
+    if (themeSwitch) {
+        themeSwitch.addEventListener("change", toggleTheme);
+    } else {
+        console.error("Theme switch not found!");
+    }
+
+    if (fullscreenToggle) {
+        fullscreenToggle.addEventListener("click", toggleFullscreen);
+    } else {
+        console.error("Fullscreen toggle button not found!");
+    }
 });
