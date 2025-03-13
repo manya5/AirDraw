@@ -23,7 +23,7 @@
             <i data-lucide="user" class="icon"></i>
             <i data-lucide="chevron-down" class="icon" id="chevron-toggle"></i> 
         
-            <!-- ✅ Fixed: Moved dropdown inside profile-menu -->
+            <!-- dropdown inside profile-menu -->
             <div id="profile-dropdown" class="dropdown hidden">
                 <a href="#"><i class="fas fa-user"></i> Signup / Login</a>
                 <a href="#"><i class="fas fa-paint-brush"></i> Setting</a>
@@ -79,6 +79,18 @@
         <i class="fab fa-tiktok"></i>
     </div>
 </div>
+</div>
+
+<!-- Video and Canvas for AirCanvas -->
+<div class="canvas-container">
+    <video id="video" width="640" height="780" autoplay></video>
+    <canvas id="canvas" width="640" height="480"></canvas>
+</div>
+
+<!-- Buttons for Clear and Save -->
+<div class="controls">
+    <button id="clear-canvas">Clear Canvas</button>
+    <button id="save-canvas">Save Drawing</button>
 </div>
 
 </html>

@@ -6,6 +6,23 @@ document.addEventListener("DOMContentLoaded", function () {
     const themeSwitch = document.querySelector("#theme-switch");
     const fullscreenToggle = document.querySelector("[data-lucide='maximize']"); // Fullscreen icon
 
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const clearButton = document.getElementById('clear-canvas');
+    const saveButton = document.getElementById('save-canvas');
+
+    // Access the webcam
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            video.srcObject = stream;
+            video.play();
+            processFrame();
+        })
+        .catch(err => {
+            console.error("Error accessing the webcam: ", err);
+        });
+
     // Debugging Logs (Check if elements exist)
     console.log("Chevron Toggle Found:", chevronToggle !== null);
     console.log("Dropdown Menu Found:", dropdownMenu !== null);
@@ -95,4 +112,56 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
         console.error("Fullscreen toggle button not found!");
     }
+
+    // Function to process frames
+    function processFrame() {
+        ctx.drawImage(video, 0, 0, 640, 480);
+        const frame = ctx.getImageData(0, 0, 640, 480);
+
+        // Send frame to Flask back-end
+        fetch('/process_frame', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ frame: Array.from(frame.data) }) // Convert frame data to array
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Draw the processed canvas
+            const img = new Image();
+            img.src = 'data:image/png;base64,' + data.canvas;
+            img.onload = () => {
+                ctx.drawImage(img, 0, 0);
+            };
+        });
+
+        // Repeat the process
+        requestAnimationFrame(processFrame);
+    }
+
+    // Clear Canvas
+    clearButton.addEventListener('click', () => {
+        fetch('/voice_command', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ command: 'clear' })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.status);
+        });
+    });
+
+    // Save Canvas
+    saveButton.addEventListener('click', () => {
+        fetch('/voice_command', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ command: 'save' })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.status);
+        });
+    });
+
 });
