@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Dropdown Menu Found:", dropdownMenu !== null);
     console.log("Script loaded!");
 
+
     // Access the webcam
     navigator.mediaDevices.getUserMedia({ video: true })
         .then(stream => {
@@ -169,4 +170,37 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
         console.error("Save button not found!");
     }
+
+    const hands = new Hands({
+        locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
+    });
+    
+    hands.setOptions({
+        maxNumHands: 2,
+        modelComplexity: 1,
+        minDetectionConfidence: 0.7,
+        minTrackingConfidence: 0.7
+    });
+    
+    const camera = new Camera(video, {
+        onFrame: async () => {
+            await hands.send({ image: video });
+        },
+        width: 640,
+        height: 480
+    });
+    
+    camera.start();
+    
+    hands.onResults(results => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    
+        if (results.multiHandLandmarks) {
+            for (const landmarks of results.multiHandLandmarks) {
+                drawConnectors(ctx, landmarks, HAND_CONNECTIONS, { color: '#00FF00', lineWidth: 2 });
+                drawLandmarks(ctx, landmarks, { color: '#FF0000', lineWidth: 1 });
+            }
+        }
+    });
 });
