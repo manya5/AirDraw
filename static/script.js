@@ -11,25 +11,28 @@ document.addEventListener("DOMContentLoaded", function () {
     const clearButton = document.getElementById('clear-canvas');
     const saveButton = document.getElementById('save-canvas');
 
+    // Debugging Logs (Check if elements exist)
+    console.log("Chevron Toggle Found:", chevronToggle !== null);
+    console.log("Dropdown Menu Found:", dropdownMenu !== null);
+    console.log("Script loaded!");
+
     // Access the webcam
     navigator.mediaDevices.getUserMedia({ video: true })
         .then(stream => {
             video.srcObject = stream;
-            video.play();
-            processFrame();
+            video.onloadedmetadata = () => {
+                video.play();
+                processFrame();
+            };
         })
         .catch(err => {
-            console.error("Error accessing the webcam: ", err);
-        });
-
-    // Debugging Logs (Check if elements exist)
-    console.log("Chevron Toggle Found:", chevronToggle !== null);
-    console.log("Dropdown Menu Found:", dropdownMenu !== null);
+            console.error('Error accessing the webcam:', err);
+        }); // <-- This closing brace was missing
 
     // Function to toggle profile dropdown
     function toggleDropdown(event) {
         event.stopPropagation();
-        console.log("Dropdown Toggle Clicked"); // Debugging
+        console.log("Dropdown Toggle Clicked");
         dropdownMenu.classList.toggle("hidden");
     }
 
@@ -88,16 +91,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Add event listeners
-    if (chevronToggle) {
+    if (dropdownMenu && chevronToggle) {
         chevronToggle.addEventListener("click", toggleDropdown);
-    } else {
-        console.error("Chevron toggle button not found!");
-    }
-
-    if (dropdownMenu) {
         document.addEventListener("click", closeDropdown);
     } else {
-        console.error("Dropdown menu not found!");
+        console.error("Dropdown menu or chevron toggle button not found!");
     }
 
     if (themeSwitch) {
@@ -114,6 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to process frames
     function processFrame() {
+        console.log("Processing frame...");
         ctx.drawImage(video, 0, 0, 640, 480);
         const frame = ctx.getImageData(0, 0, 640, 480);
 
@@ -123,44 +122,51 @@ document.addEventListener("DOMContentLoaded", function () {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ frame: Array.from(frame.data) }) // Convert frame data to array
         })
-        .then(response => response.json())
-        .then(data => {
-            // Draw the processed canvas
-            const img = new Image();
-            img.src = 'data:image/png;base64,' + data.canvas;
-            img.onload = () => {
-                ctx.drawImage(img, 0, 0);
-            };
-        });
+            .then(response => response.json())
+            .then(data => {
+                // Draw the processed canvas
+                const img = new Image();
+                img.src = 'data:image/png;base64,' + data.canvas;
+                img.onload = () => {
+                    ctx.drawImage(img, 0, 0);
+                };
+            });
 
         // Repeat the process
         requestAnimationFrame(processFrame);
     }
 
     // Clear Canvas
-    clearButton.addEventListener('click', () => {
-        fetch('/voice_command', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ command: 'clear' })
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data.status);
+    if (clearButton) {
+        clearButton.addEventListener('click', () => {
+            fetch('/voice_command', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ command: 'clear' })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.status);
+                });
         });
-    });
+    } else {
+        console.error("Clear button not found!");
+    }
 
     // Save Canvas
-    saveButton.addEventListener('click', () => {
-        fetch('/voice_command', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ command: 'save' })
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data.status);
+    if (saveButton) {
+        saveButton.addEventListener('click', () => {
+            fetch('/voice_command', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ command: 'save' })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.status);
+                });
         });
-    });
-
+    } else {
+        console.error("Save button not found!");
+    }
 });
