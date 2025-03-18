@@ -24,9 +24,7 @@ while cap.isOpened():
     rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     result = hands.process(rgb_frame)
 
-    print("Processing frame...")  # Debugging
     if result.multi_hand_landmarks:
-        print("Hand detected!")  # Debugging
         for hand_landmarks in result.multi_hand_landmarks:
             mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
 
@@ -37,11 +35,6 @@ while cap.isOpened():
             # Ensure coordinates are within bounds
             if 0 <= x < w and 0 <= y < h:
                 cv2.circle(canvas, (x, y), 5, (255, 255, 255), -1)
-            else:
-                print(f"Invalid coordinates: {x}, {y}")  # Debugging
-
-    else:
-        print("No hand detected.")  # Debugging
 
     # Blend canvas with frame for drawing effect
     blended_frame = cv2.addWeighted(frame, 0.7, canvas, 0.3, 0)
