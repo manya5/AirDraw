@@ -132,7 +132,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     ctx.drawImage(img, 0, 0);
                 };
             });
-
         // Repeat the process
         requestAnimationFrame(processFrame);
     }
@@ -203,4 +202,13 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
+
+    fetch('/voice_command', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ command: 'clear' }) // Example command
+    })
+    .then(response => response.json())
+    .then(data => console.log(data.status))
+    .catch(error => console.error('Error:', error));    
 });
