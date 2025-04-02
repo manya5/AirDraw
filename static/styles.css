@@ -153,6 +153,42 @@ body {
     background:  rgba(30, 64, 175, 0.2);
 }
 
+.dropdown.active {
+    width: 150px; /* Set a fixed width */
+    height: 150px; /* Set equal height to make it a square */
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center; /* Center items */
+    gap: 10px;
+    position: absolute;
+    left: 110%; /* Position it correctly */
+    top: 0;
+    background: rgba(30, 64, 175, 0.2);
+    border-radius: 6px;
+    padding: 10px; /* Reduce excessive padding */
+    border-radius: 20px;
+    transition: background-color 0.3s;
+    border: 2px solid #1E40AF;
+    cursor: pointer;
+}
+
+/* Dropdown Menu Arrow */
+.dropdown::after {
+    content: '';
+    position: absolute;
+    top: -10px; /* Adjust this value to position the arrow */
+    right: 20px; /* Adjust this value to position the arrow */
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent rgba(30, 64, 175, 0.2) transparent; /* Arrow color */
+}       
+/* Light Mode */
+.light-mode .dropdown {
+    background: rgba(0, 0, 0, 0.1);
+    border: 2px solid #ccc;
+}
+
 /* Social Icons */
 .social-icons {
     display: flex;
@@ -202,7 +238,6 @@ body {
     border-radius: 20px;
     transition: background-color 0.3s;
 }
-
 .theme-toggle .slider:before {
     position: absolute;
     content: "";
@@ -261,6 +296,8 @@ body {
     backdrop-filter: blur(5px);
 }
 
+
 .controls button:hover {
     background: rgba(30, 64, 175, 0.4);
 }
+
