@@ -162,7 +162,7 @@ body {
     justify-content: center; /* Center items */
     gap: 10px;
     position: absolute;
-    left: 115%; /* Position it correctly */
+    left: 110%; /* Position it correctly */
     top: 0;
     background: rgba(30, 64, 175, 0.2);
     border-radius: 6px;
