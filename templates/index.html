@@ -43,12 +43,22 @@
 
     <!-- Left Sidebar -->
     <div class="sidebar">
-        <i data-lucide="globe" class="icon"></i>
-        <span>Spaces</span>
-        <i data-lucide="edit" class="icon"></i>
-        <span>Edit</span>
-        <i data-lucide="upload-cloud" class="icon"></i>
-        <span>Media</span>
+
+            <!-- Globe Icon (Click to Toggle Dropdown) -->
+        <i data-lucide="globe" class="icon" id="globe-toggle"></i> 
+
+    <!-- Globe Space Dropdown -->
+        <div id="globe-dropdown" class="dropdown hidden">
+            <a href="#"><i class="fas fa-video"></i> Videos</a> 
+            <a href="#"><i class="fas fa-image"></i> Images</a> 
+            <a href="#"><i class="fas fa-star"></i> Favorites</a> 
+        </div>
+        
+            <span>Spaces</span>
+            <i data-lucide="edit" class="icon"></i>
+            <span>Edit</span>
+            <i data-lucide="upload-cloud" class="icon"></i>
+            <span>Media</span>
     </div>
 
     <!-- Lower Sidebar -->
