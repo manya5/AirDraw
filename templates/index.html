@@ -22,7 +22,6 @@
         <div class="profile-menu">
             <i data-lucide="user" class="icon"></i>
             <i data-lucide="chevron-down" class="icon" id="chevron-toggle"></i> 
-        
             <!-- dropdown inside profile-menu -->
             <div id="profile-dropdown" class="dropdown hidden">
                 <a href="#"><i class="fas fa-user"></i> Signup / Login</a>
@@ -94,12 +93,16 @@
     <video id="video" width="640" height="780" autoplay></video>
     <canvas id="canvas" width="640" height="480"></canvas>
 </div>
-
-<!-- Buttons for Clear and Save -->
+<!-- Buttons for Clear, Colors, and Eraser -->
 <div class="controls">
     <button id="clear-canvas">Clear Canvas</button>
-    
-    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <button onclick="selectColor('red')">Red</button>
+    <button onclick="selectColor('green')">Green</button>
+    <button onclick="selectColor('blue')">Blue</button>
+    <button onclick="selectColor('black')">Black</button>
+    <button onclick="selectEraser()">Eraser</button>
+</div>
+     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     
 </div>
 </html>
