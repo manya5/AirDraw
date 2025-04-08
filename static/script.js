@@ -8,6 +8,22 @@ document.addEventListener("DOMContentLoaded", function () {
     const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
+    let drawing = false;
+let drawColor = 'black';
+let drawLineWidth = 5;
+let lastX = 0;
+let lastY = 0;
+
+window.selectColor = function(color) {
+    drawColor = color;
+    drawLineWidth = 5;
+};
+
+window.selectEraser = function() {
+    drawColor = 'white'; // Assuming canvas background is white
+    drawLineWidth = 20;
+};
+
     const clearButton = document.getElementById('clear-canvas');
     const saveButton = document.getElementById('save-canvas');
 
@@ -15,8 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Chevron Toggle Found:", chevronToggle !== null);
     console.log("Dropdown Menu Found:", dropdownMenu !== null);
     console.log("Script loaded!");
-
-
     // Access the webcam
     navigator.mediaDevices.getUserMedia({ video: true })
         .then(stream => {
@@ -195,14 +209,42 @@ document.addEventListener("DOMContentLoaded", function () {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     
-        if (results.multiHandLandmarks) {
+        if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+            const landmarks = results.multiHandLandmarks[0]; // Use first hand
+    
+            // Index finger tip
+            const indexTip = landmarks[8];
+    
+            const x = indexTip.x * canvas.width;
+            const y = indexTip.y * canvas.height;
+    
+            if (!drawing) {
+                drawing = true;
+                lastX = x;
+                lastY = y;
+            }
+    
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(x, y);
+            ctx.strokeStyle = drawColor;
+            ctx.lineWidth = drawLineWidth;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+    
+            lastX = x;
+            lastY = y;
+    
+            // Optional: draw hand landmarks on top
             for (const landmarks of results.multiHandLandmarks) {
                 drawConnectors(ctx, landmarks, HAND_CONNECTIONS, { color: '#00FF00', lineWidth: 2 });
                 drawLandmarks(ctx, landmarks, { color: '#FF0000', lineWidth: 1 });
             }
+        } else {
+            drawing = false; // stop drawing if no hand
         }
     });
-
+    
     fetch('/voice_command', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
